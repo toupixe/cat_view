@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-<title>Single Page</title>
+<title>旅游详情</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="" />
@@ -184,11 +184,8 @@
 			<div class="w3_leave_comment">
 				<h3>发表你的 <span>意见</span></h3> 
 				<form action="#" method="post">
-					<input type="text" name="Name" placeholder="Name" required="">
-					<input class="email" type="email" name="Email" placeholder="Email" required="">
-					<input type="text" name="Phone" placeholder="Phone" required="">
-					<textarea placeholder="Message" name="Message" required=""></textarea>
-					<input type="submit" value="SUBMIT">
+					<textarea placeholder="说你想说的" name="Message" required=""></textarea>
+					<input type="submit" value="提交">
 				</form>
 			</div>
 		</div>
@@ -277,5 +274,47 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script th:src="@{/js/bootstrap.js}" src="js/bootstrap.js"></script>
+	<script type="text/javascript">
+	
+		//获取url的参数的值
+		function Request(strName){ 
+			var strHref = window.location.href; 
+			var intPos = strHref.indexOf("?"); 
+			var strRight = strHref.substr(intPos + 1); 
+			var arrTmp = strRight.split("&"); 
+			for(var i = 0; i < arrTmp.length; i++) { 
+				var arrTemp = arrTmp[i].split(":"); 
+				if(arrTemp[0].toUpperCase() == strName.toUpperCase()) 
+				return arrTemp[1]; 
+			} 
+			return ""; 
+		}
+		
+		//通过id获取生活文章详情
+		function getLifeById(lifeId) {
+			$.ajax({
+    			type:"POST",
+    			url:"http://localhost:8080/life/getLife",
+    			data:{"lifeId":lifeId},
+    			dataType:"json",
+				xhrFields:{withCredentials:true},
+    			success:function(data){
+    				if (data.stauts == "success") {
+    				} else {
+    					alert(data.data.errorMsg)
+    				}
+    			}
+    		});
+		}
+		
+		$(function(){
+			//生活文章id
+			var lifeId = Request('lifeId')
+			getLifeById(lifeId);
+		})
+		
+		
+	</script>
+	
 </body>
 </html>

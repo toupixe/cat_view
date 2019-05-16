@@ -228,38 +228,8 @@
 	<div class="events">
 		<div class="container">
 			<h3 class="agileits-title">生活片段</h3> 
-			<div class="agile_banner_bottom_grids">
-				<div class="col-sm-6 col-xs-6 agile_events_grid">
-					<a href="single.html"><img th:src="@{/img/img1.jpg}" src="img/img1.jpg" alt=" " class="img-responsive" /></a>
-					<div class="agile_events_grid_pos agile_events_grid_pos1">
-						<h5><span>01</span> 02 / 2017</h5>
-						<h4><a href="/cat/single">去乐山大佛玩</a></h4>
-						<p>没吃早饭，就去爬山，上山，下山，再上山，大佛旁边的小道非常的险峻，每一步都小心翼翼</p>
-					</div>
-					<div class="agileits_w3layouts_events_grid_social">
-						<div class="social-icon evnts-w3lsicons">
-							<a href="#" class="social-button twitter"><i class="fa fa-twitter"></i></a>
-							<a href="#" class="social-button facebook"><i class="fa fa-facebook"></i></a>  
-							<a href="#" class="social-button dribbble"><i class="fa fa-dribbble"></i></a> 
-						</div> 
-					</div>
-				</div>
-				<div class="col-sm-6 col-xs-6 agile_events_grid">
-					<img th:src="@{/img/img2.jpg}" src="img/img2.jpg" alt=" " class="img-responsive" />
-					<div class="agile_events_grid_pos_sub agile_events_grid_pos1">
-						<h5 class="w3_agileits_event_head"><span>05</span> 02 / 2017</h5>
-						<h4><a href="single.html">consequat dictum sodales</a></h4>
-						<p>Nunc non maximus augue, sit amet dictum diam. Etiam ultrices hendrerit sapien, 
-							id volutpat tortor viverra et.</p>
-					</div>
-					<div class="agileits_w3layouts_events_grid_social">
-						<div class="social-icon evnts-w3lsicons">
-							<a href="#" class="social-button twitter"><i class="fa fa-twitter"></i></a>
-							<a href="#" class="social-button facebook"><i class="fa fa-facebook"></i></a>  
-							<a href="#" class="social-button dribbble"><i class="fa fa-dribbble"></i></a> 
-						</div> 
-					</div>
-				</div> 
+			<div class="agile_banner_bottom_grids" id="life_info">
+				
 			</div>
 		</div>
 	</div>
@@ -375,6 +345,7 @@
     
     $(function(){
     	showAndCloseDIV("info_div");
+		getLifeLst();
     })
     //登陆
     function login() {
@@ -502,7 +473,7 @@
     		}
     		$.ajax({
     			type:"POST",
-    			url:"/index/sentContact",
+    			url:"http://localhost:8080/index/sentContact",
     			data:{"name":name,"phone":phone},
     			dataType:"json",
 				xhrFields:{withCredentials:true},
@@ -515,6 +486,71 @@
     			}
     		})
     	}
+		
+		function getLifeLst() {
+			var str = '';
+			$.ajax({
+			type: 'POST',
+			url: "http://localhost:8080/life/getLifeLst",
+			xhrFields:{withCredentials:true},
+			success: function (data){
+				if(data.stauts == 'success'){
+					var dataSource = data.data;
+					if (dataSource.length > 0) {
+						for(var i=0; i< dataSource.length; i++) {
+							var datetime = new Date(dataSource[i].time);
+							var year = datetime.getFullYear();
+							var month = datetime.getMonth();
+							var day = datetime.getDay();
+							//标题
+							var title = dataSource[i].title;
+							//正文
+							var context = dataSource[i].context;
+							//图片地址
+							var imgUrl = dataSource[i].imgUrl;
+							//文章的主键id
+							var lifeId = dataSource[i].id;
+							str += '<div class="col-sm-6 col-xs-6 agile_events_grid">'
+							str +=			'<a href="single.html?lifeId:'+ lifeId + '"><img th:src="@{/'+ imgUrl +'}" src="'+ imgUrl +'" alt=" " class="img-responsive" /></a>'
+							str +=			'<div class="agile_events_grid_pos agile_events_grid_pos1">'
+							str +=				'<h5><span>'+ day +'</span> '+ month +' / ' + year + '</h5>'
+							str +=				'<h4><a href="/cat/single" id="life_title">'+ title +'</a></h4>'
+							str +=				'<p>'+ context +'</p>'
+							str +=			'</div>'
+							str +=			'<div class="agileits_w3layouts_events_grid_social">'
+							str +=				'<div class="social-icon evnts-w3lsicons">'
+							str +=					'<a href="#" class="social-button twitter"><i class="fa fa-twitter"></i></a>'
+							str +=					'<a href="#" class="social-button facebook"><i class="fa fa-facebook"></i></a>'  
+							str +=					'<a href="#" class="social-button dribbble"><i class="fa fa-dribbble"></i></a>' 
+							str +=				'</div>' 
+							str +=			'</div>'
+							str += '</div>'
+						}
+					} else {
+						str += '<div class="col-sm-6 col-xs-6 agile_events_grid">'
+						str += '<strong>'+ 暂无数据 + '</strong>'
+						str += '</div>'
+						$("#life_info").append(str);
+					}
+					$("#life_info").append(str);
+				} else {
+					alert(data.errorMsg)
+					str += '<div class="col-sm-6 col-xs-6 agile_events_grid">'
+					str += '<strong>'+ 暂无数据 + '</strong>'
+					str += '</div>'
+					$("#life_info").append(str);
+				}
+			},
+			error : function(data) {
+				alert("发生错误了，请重试!")
+				str += '<div class="col-sm-6 col-xs-6 agile_events_grid">'
+				str += '<strong>'+ 暂无数据 + '</strong>'
+				str += '</div>'
+				$("#life_info").append(str);
+			}
+			});
+			
+		}
     </script>
     <!-- 模态框（Modal） 注册-->
 <div class="modal fade" id="myRegistModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

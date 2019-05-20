@@ -68,13 +68,11 @@
 					<img th:src="@{/img/g7.jpg}" src="img/g7.jpg" style="width:100%;height:auto;">
 				</div>
 				<div class="col-md-6 contact-right">
-					<form action="#" method="post">
-						<input type="text" name="Name" placeholder="Name" required="">
-						<input type="text" name="Email" placeholder="Email" required="">
-						<input type="text" name="Subject" placeholder="Subject" required="">
-						<textarea name="Message" placeholder="Message" required=""></textarea>
-						<input type="submit" value="SEND">
-					</form>
+						<input type="text" id="Name" name="Name" placeholder="你的名字" required="">
+						<input type="text" id="Email" name="Email" placeholder="你的邮箱" required="">
+						<input type="text" id="Subject" name="Subject" placeholder="你的组织" required="">
+						<textarea name="Message"  id="Message" placeholder="消息" required=""></textarea>
+						<input type="button" value="SEND" onclick="send();">
 				</div>
 				<div class="clearfix"> </div>
 			</div>
@@ -168,6 +166,33 @@
 			$().UItoTop({ easingType: 'easeOutQuart' });
 			
 		});
+	</script>
+	
+	<script type="text/javascript">
+		function send() {
+			var name = $("#name").val();
+    		var Email = $("#Email").val();
+			var Subject = $("#Subject").val();
+			var Message = $("#Message").val();
+    		if (name == null || name == "" || name == "undefined" || Email == null || Email == "" || Email == "undefined") {
+    			alert("请填写姓名和邮箱");
+    			return false;
+    		}
+    		$.ajax({
+    			type:"POST",
+    			url:"http://localhost:8080/contact/sentContact",
+    			data:{"name":name,"Email":Email,"Subject":Subject,"Message":Message},
+    			dataType:"json",
+				xhrFields:{withCredentials:true},
+    			success:function(data){
+    				if (data.stauts == "success") {
+    					alert(data.data.msg)
+    				} else {
+    					alert(data.data.errorMsg)
+    				}
+    			}
+    		})
+		}
 	</script>
 	<!-- //smooth-scrolling-of-move-up -->    
 	<!-- Bootstrap core JavaScript

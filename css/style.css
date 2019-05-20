@@ -1020,6 +1020,37 @@ figure.effect-julia:hover p {
 	-moz-transform: scale(.9);
     transform: scale(.9);
 }
+
+.contact input[type="button"] { 
+    outline: none;
+    color: #fff;
+    padding: .8em 4em;
+    font-size: 1em;
+    margin: 1em 0 0 0;
+    -webkit-appearance: none;
+    background: #ff5722;
+    border: solid 1px #ff5722;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px; 
+    -webkit-transition: 0.5s all;
+    -o-transition: 0.5s all;
+    -moz-transition: 0.5s all;
+    -ms-transition: 0.5s all; 
+	transition: 0.5s all;
+}
+.contact input[type="button"]:hover {
+    background: none;
+    color: #ff5722;
+	-webkit-transform: scale(.9);
+	-moz-transform: scale(.9);
+	-o-transform: scale(.9);
+	-moz-transform: scale(.9);
+    transform: scale(.9);
+}
+
+
+
 .contact input[type="text"]:hover,.contact input[type="text"]:valid ,.contact textarea:valid,.contact textarea:hover{
     border-color:#00aec5;
 }

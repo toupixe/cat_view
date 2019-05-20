@@ -55,7 +55,7 @@
 		</div>	
 		<!-- //navigation --> 
 		<div class="banner-w3text w3layouts aboutw3l-bnrtext">
-			<h2><span>旅游</span></h2>  
+			<h2><span>life</span></h2>  
 		</div>  
 	</div>
 	<!-- //banner -->  
@@ -65,10 +65,10 @@
 			<div class="col-md-7 w3ls_single_left">
 				<div class="w3ls_single_left_grid"> 
 					<div class="w3ls_single_left_grid_right">
-						<h3>第一次到乐山大佛去游玩</h3>
-						<h5>2019/4/23</h5>
+						<h3 id="life_title">第一次到乐山大佛去游玩</h3>
+						<h5 id="life_time">2019/4/23</h5>
 						<ul>
-							<li><span class="glyphicon glyphicon-user" aria-hidden="true"></span><a href="#">Admin</a></li>
+							<li><span class="glyphicon glyphicon-user" aria-hidden="true"></span><a href="#" id="life_author">Admin</a></li>
 							<li><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span><a href="#">2 Comments</a></li>
 							<li><span class="glyphicon glyphicon-heart" aria-hidden="true"></span><a href="#">50 Likes</a></li>
 							<li><span class="glyphicon glyphicon-tag" aria-hidden="true"></span><a href="#">3 Tags</a></li>
@@ -77,8 +77,11 @@
 					<div class="clearfix"> </div>
 				</div>
 				<div class="w3ls_single_left_grid1">
-					<img th:src="@{/img/img2.jpg}" src="img/img2.jpg" alt=" " class="img-responsive" />
-					<p>第一段：怎么怎么玩<span>第二段：怎么怎么玩</span></p>
+					<img id="life_pic" th:src="@{/img/img2.jpg}" src="img/img2.jpg" alt=" " class="img-responsive" />
+					<p id="life_context">
+						第一段：怎么怎么玩
+						<span>第二段：怎么怎么玩</span>
+					</p>
 					<div class="w3ls_single_left_grid1_left">
 						<h4>分享 :</h4>
 					</div>
@@ -96,90 +99,29 @@
 					<h4>最精评论 :</h4>
 				</div>
 				<div class="w3l_admin"> 
-					<p><i class="fa fa-quote-left"></i> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras rhoncus nulla tempus est tempor, sit amet gravida turpis faucibus. Ut rhoncus vehicula sem varius finibus. Mauris ac ullamcorper velit etiam accumsan felis.</p>
-					<a href="#"><i>John Frank</i></a>
+					<p><span id="beast_comment_context">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras rhoncus nulla tempus est tempor, sit amet gravida turpis faucibus. Ut rhoncus vehicula sem varius finibus. Mauris ac ullamcorper velit etiam accumsan felis.</span></p>
+					<a href="#"><i id="beast_comment_author">John Frank</i></a>
 				</div>
 			</div>
 			<div class="col-md-5 w3ls_single_right"> 
 				<div class="wthree_recent">
 					<h4>更新日历</h4>
-					<ul>
-						<li><a href="#"><i class="glyphicon glyphicon-ok" aria-hidden="true"></i>tempora incidunt ut labore dolore</a><span><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i>June 21, 2016.</span></li>
-						<li><a href="#"><i class="glyphicon glyphicon-ok" aria-hidden="true"></i>voluptatem quia voluptas sit</a><span><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i>June 23, 2016.</span></li>
-						<li><a href="#"><i class="glyphicon glyphicon-ok" aria-hidden="true"></i>sed quia consequuntur magni</a><span><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i>June 24, 2016.</span></li>
-						<li><a href="#"><i class="glyphicon glyphicon-ok" aria-hidden="true"></i>ratione voluptatem sequi nesciunt</a><span><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i>June 25, 2016.</span></li>
-						<li><a href="#"><i class="glyphicon glyphicon-ok" aria-hidden="true"></i>aspernatur aut odit aut fugit</a><span><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i>June 28, 2016.</span></li>
+					<ul id="update_info">
+						
 					</ul>
 				</div>
 				<div class="agileits-tags">
 					<h4>标签</h4>
 					<div class="agile_cat_grid_tags">
-						<ul>
-							<li><a href="#">Sed quia</a></li>
-							<li><a href="#">Quaerat </a></li>
-							<li><a href="#">Voluptatem</a></li>
-							<li><a href="#">Consequatur</a></li>
-							<li><a href="#">Vel illum qui</a></li>
-							<li><a href="#">Quis autem</a></li>
-							<li><a href="#">Magnam aliquam</a></li>
+						<ul id="type_info">
+						
 						</ul>
 					</div>
 				</div>
 			</div>
 			<div class="clearfix"> </div> 
-			<div class="agileits_three_comments">
+			<div class="agileits_three_comments" id="comment_info">
 				<h3>评论</h3>
-				<div class="agileits_three_comment_grid">
-					<div class="agileits_tom"> 
-						<i class="fa fa-user"></i>
-					</div>
-					<div class="agileits_tom_right">
-						<div class="Hardy">
-							<h4>Frank Lii</h4>
-							<p>21 June 2016</p>
-						</div>
-						<div class="reply">
-							<a href="#">Reply</a>
-						</div>
-						<div class="clearfix"> </div> 
-						<p class="lorem">Etiam interdum non dui dignissim vestibulum. In non velit et mi varius bibendum eu sit amet ante. Morbi ullamcorper nibh non dui volutpat volutpat. Pellentesque et porta urna.</p>
-					</div>
-					<div class="clearfix"> </div>
-				</div> 
-				<div class="agileits_three_comment_grid agileits_three_comment_grid1">
-					<div class="agileits_tom"> 
-						<i class="fa fa-user" aria-hidden="true"></i>
-					</div>
-					<div class="agileits_tom_right">
-						<div class="Hardy">
-							<h4>Richard Carl</h4>
-							<p>05 Nov 2016</p>
-						</div>
-						<div class="reply">
-							<a href="#">Reply</a>
-						</div>
-						<div class="clearfix"> </div>
-						<p class="lorem">Interdum etiam non dui dignissim vestibulum. In non velit et mi varius bibendum eu sit amet ante. Morbi ullamcorper pellentesque et porta urna.</p>
-					</div> 
-					<div class="clearfix"> </div>
-				</div>
-				<div class="agileits_three_comment_grid">
-					<div class="agileits_tom">
-						<i class="fa fa-user" aria-hidden="true"></i>
-					</div>
-					<div class="agileits_tom_right">
-						<div class="Hardy">
-							<h4>Tom Hardy</h4>
-							<p>18 Dec 2016</p>
-						</div>
-						<div class="reply">
-							<a href="#">Reply</a>
-						</div>
-						<div class="clearfix"> </div>
-						<p class="lorem">Etiam interdum non dui dignissim vestibulum. In non velit et mi varius bibendum eu sit amet ante. Morbi ullamcorper nibh non dui volutpat volutpat. Pellentesque et porta urna.</p>
-					</div>
-					<div class="clearfix"> </div>
-				</div>
 			</div>
 			<div class="w3_leave_comment">
 				<h3>发表你的 <span>意见</span></h3> 
@@ -289,6 +231,79 @@
 			} 
 			return ""; 
 		}
+		//获取一个yyyy-mm-dd的时间
+		function getTime(datetime) {
+			var date = new Date(datetime);
+			var year = date.getFullYear();
+			var month = date.getMonth();
+			var day = date.getDay();
+			return year + "-" + month + "-" + day
+		}
+		
+		
+		
+		function setLifeTOHtml(lifeDetails) {
+			//标题
+			$("#life_title").html(lifeDetails.title);
+			//作者
+			$("#life_author").html(lifeDetails.author);
+			//时间
+			$("#life_time").html(getTime(lifeDetails.time));
+			//正文
+			$("#life_context").html(lifeDetails.context);
+			//封面
+			$("#life_pic").attr("src",lifeDetails.imgUrl)
+		}
+		
+		function setLifeCommentToHtml(commen) {
+			var str = '';
+			if (commen.length ==0 ) {
+				str +='<div class="agileits_three_comment_grid">暂无评论</div>'
+			} else {
+				for(var i=0;i<commen.length;i++) {
+					str+='<div class="agileits_three_comment_grid">'
+					str+=	'<div class="agileits_tom"> '
+					str+=		'<i class="fa fa-user"></i>'
+					str+=	'</div>'
+					str+=	'<div class="agileits_tom_right">'
+					str+=		'<div class="Hardy">'
+					str+=			'<h4>'+ commen[i].userName +'</h4>'
+					str+=			'<p>'+ getTime(commen[i].time) +'</p>'
+					str+=		'</div>'
+					str+=		'<div class="reply">'
+					str+=			'<a href="#">Reply</a>'
+					str+=		'</div>'
+					str+=		'<div class="clearfix"> </div>' 
+					str+=		'<p class="lorem">'+ commen[i].context +'.</p>'
+					str+=	'</div>'
+					str+=	'<div class="clearfix"> </div>'
+					str+='</div>'
+					//最精评论
+					if (commen[i].isBetter == 't') {
+						$("#beast_comment_context").html(commen[i].context);
+						$("#beast_comment_author").html(commen[i].userName);
+					}
+				}
+			}
+			$("#comment_info").append(str)
+		}
+		
+		function setUpdateToHtml(updateEvent) {
+			var str = ''
+			for(var i=0; i< updateEvent.length; i++) {
+				str += '<li><a href="#"><i class="glyphicon glyphicon-ok" aria-hidden="true"></i>' + updateEvent[i].updateTitle + '</a><span><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i>'+ getTime(updateEvent[i].updateTime) +'</span></li>'
+			}
+			$("#update_info").append(str)
+		}
+		
+		
+		function setTypeToHtml(type) {
+			var str = '';
+			for (var i=0;i<type.length;i++) {
+				str+='<li><a href="#">'+ type[i].typeName +'</a></li>'
+			}
+			$("#type_info").append(str);
+		}
 		
 		//通过id获取生活文章详情
 		function getLifeById(lifeId) {
@@ -300,6 +315,24 @@
 				xhrFields:{withCredentials:true},
     			success:function(data){
     				if (data.stauts == "success") {
+						var dataSource = data.data;
+						
+						//获取生活详情
+						var lifeDetails = dataSource;
+						setLifeTOHtml(lifeDetails)
+						
+						//获取评论
+						var commen = dataSource.commentLst;
+						setLifeCommentToHtml(commen)
+						
+						//获取标签
+						var type = dataSource.lifeTypeLst;
+						setTypeToHtml(type)
+						
+						//获取更新履历
+						var updateEvent = dataSource.lifeUpdateLst
+						setUpdateToHtml(updateEvent)
+						
     				} else {
     					alert(data.data.errorMsg)
     				}

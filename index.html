@@ -473,7 +473,7 @@
     		}
     		$.ajax({
     			type:"POST",
-    			url:"http://localhost:8080/index/sentContact",
+    			url:"http://localhost:8080/contact/sentContact",
     			data:{"name":name,"phone":phone},
     			dataType:"json",
 				xhrFields:{withCredentials:true},
@@ -514,7 +514,7 @@
 							str +=			'<a href="single.html?lifeId:'+ lifeId + '"><img th:src="@{/'+ imgUrl +'}" src="'+ imgUrl +'" alt=" " class="img-responsive" /></a>'
 							str +=			'<div class="agile_events_grid_pos agile_events_grid_pos1">'
 							str +=				'<h5><span>'+ day +'</span> '+ month +' / ' + year + '</h5>'
-							str +=				'<h4><a href="/cat/single" id="life_title">'+ title +'</a></h4>'
+							str +=				'<h4><a href="single.html?lifeId:'+ lifeId + '" id="life_title">'+ title +'</a></h4>'
 							str +=				'<p>'+ context +'</p>'
 							str +=			'</div>'
 							str +=			'<div class="agileits_w3layouts_events_grid_social">'
@@ -635,7 +635,7 @@
 					&times;
 				</button>
 				<h4 class="modal-title" id="myModalLabel">
-					注册
+					登陆
 				</h4>
 			</div>
 			<div class="modal-body">

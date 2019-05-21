@@ -76,10 +76,10 @@
 			<h3 class="agileits-title">My Life</h3> 
 			<div class="agileinfo-gallery-row">
 				<div class="col-md-4 col-sm-4 col-xs-6 w3gallery-grids">
-					<a th:href="@{/life_and_download.html}" href="life_and_download.html" class="imghvr-hinge-right wthree">
+					<a th:href="@{/single.html}" href="single.html" class="imghvr-hinge-right wthree">
 						<img th:src="@{/img/g2.jpg}" src="img/g2.jpg" alt="" class="img-response" title="Invent Image"/> 
 						<div class="agile-figcaption">
-						  <h4>文章集</h4>
+						  <h4>文章1</h4>
 						  <p>存放自己喜欢的文章</p>
 						</div>
 					</a> 
@@ -88,7 +88,7 @@
 					<a th:href="@{/img/g3.jpg}" href="img/g3.jpg" class="imghvr-hinge-right wthree">
 						<img th:src="@{/img/g3.jpg}" src="img/g3.jpg" alt="" class="img-response" title="Invent Image"/> 
 						<div class="agile-figcaption">
-						  <h4>下载区</h4>
+						  <h4>文章2</h4>
 						  <p>精品资源</p>
 						</div>
 					</a> 
@@ -187,6 +187,57 @@
 		$(function(){
 			setUserInfo();
 		})
+		
+		function getLifeLst() {
+			var str = '';
+			$.ajax({
+			type: 'POST',
+			url: "http://localhost:8080/life/getLifeLst",
+			xhrFields:{withCredentials:true},
+			success: function (data){
+				if(data.stauts == 'success'){
+					var dataSource = data.data;
+					if (dataSource.length > 0) {
+						for(var i=0; i< dataSource.length; i++) {
+							var datetime = new Date(dataSource[i].time);
+							var year = datetime.getFullYear();
+							var month = datetime.getMonth();
+							var day = datetime.getDay();
+							//标题
+							var title = dataSource[i].title;
+							//正文
+							var context = dataSource[i].context;
+							//图片地址
+							var imgUrl = dataSource[i].imgUrl;
+							//文章的主键id
+							var lifeId = dataSource[i].id;
+							
+						}
+					} else {
+						str += '<div class="col-sm-6 col-xs-6 agile_events_grid">'
+						str += '<strong>暂无数据</strong>'
+						str += '</div>'
+						$("#life_info").append(str);
+					}
+					$("#life_info").append(str);
+				} else {
+					str += '<div class="col-sm-6 col-xs-6 agile_events_grid">'
+					str += '<strong>暂无数据</strong>'
+					str += '</div>'
+					$("#life_info").append(str);
+				}
+			},
+			error : function(data) {
+				swal("发生错误了!","请重试", "error");
+				str += '<div class="col-sm-6 col-xs-6 agile_events_grid">'
+				str += '<strong>暂无数据</strong>'
+				str += '</div>'
+				$("#life_info").append(str);
+			}
+			});
+			
+		}
+		
 	</script>
 	    <!-- 模态框（Modal） 注册-->
 	<div class="modal fade" id="myRegistModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

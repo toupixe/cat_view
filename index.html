@@ -7,7 +7,7 @@
 <meta name="keywords" content="" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- Custom Theme files -->
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <link href="css/style.css" th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="all">  
  
 <link href="css/font-awesome.css" th:href="@{/css/font-awesome.css}"  rel="stylesheet"> <!-- font-awesome icons -->
@@ -15,11 +15,12 @@
 <!-- js -->
 <script src="js/jquery-2.2.3.min.js" th:src="@{/js/jquery-2.2.3.min.js}"></script> 
 <script src="js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>  
+
 <link href="css/bootstrap.css" th:href="@{/css/bootstrap.css}" type="text/css" rel="stylesheet" media="all"> 
 <!-- //js -->
 <!-- web-fonts -->  
-<link th:href="@{http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700}" rel="stylesheet"> 
-<link th:href='@{http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic}' rel='stylesheet' type='text/css'>
+<link th:href="@{http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700}" href="http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700" rel="stylesheet"> 
+<link th:href='@{http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic}' href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 <!-- //web-fonts -->
 <style>
 
@@ -82,6 +83,7 @@
 					</div>
 					<div class="w3ls-bnr-icons social-icon navbar-right" id="load_info" style="display:none">
 						 <strong>欢迎你！</strong><span id="userinfo"></span> 
+						 <a href="#" onclick="exit()"><i>退出</i></a> 
 					</div>
 					<div class="clearfix"> </div>  
 				</div>
@@ -97,8 +99,8 @@
 			<div class="wthree-bnr-login">
 					<ul>   
 						<li><input type="text" id="name" name="name" placeholder="你的姓名" required=""></li>
-						<li><input type="text" id="phone" name="phone" placeholder="你的电话" required=""></li>
-						<li><input type="button" id="register" class="btn btn-primary" value="联系我" onclick="commit();"></li>
+						<li><input type="text" maxlength="11" id="phone" name="phone" placeholder="你的电话" required=""></li>
+						<li><input type="button" id="register" class="btn btn-primary" value="联系我" onclick="commit(this);"></li>
 					</ul>
 			</div>
 			<h6>快乐的源泉来自于生活</h6> 
@@ -241,12 +243,6 @@
 				<div class="col-md-6 w3_agile_newsletter_left">
 					<h4>关于我们</h4>
 				</div>
-				<div class="col-md-6 w3_agile_newsletter_right">
-					<form action="#" method="post">
-						<input type="email" name="Email" placeholder="Email..." required="">
-						<input type="submit" value="Subscribe">
-					</form>
-				</div>
 				<div class="clearfix"> </div> 
 			</div> 
 			<div class="footer-bottom">
@@ -276,7 +272,6 @@
 						<li class="phn"><i></i>18483658538</li>
 						<li>1019021863@qq.com</li>
 					</ul>
-					<!-- <p>Copyright &copy; 2017.Company name All rights reserved.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p> -->
 				</div>
 				<div class="clearfix"> </div>
 			</div>
@@ -332,145 +327,29 @@
     
     <script type="text/javascript">	
     
-    function showAndCloseDIV(div_id) {
-    	if($("#" + div_id).is(':hidden')){
-    		//如果隐藏时。。。
-    		$("#" + div_id).show();
-
-    	}else{
-    	    //如果显示时。。。
-    		$("#" + div_id).hide();
-    	}
-    }
-    
+	
     $(function(){
     	showAndCloseDIV("info_div");
 		getLifeLst();
+		setUserInfo();
     })
-    //登陆
-    function login() {
-    	var phone = $("#loginPhone").val();
-    	var passward = $("#loginPassward").val();
-    	if (phone == null || phone == "" || phone == "undefined" || passward == null || passward == "" || passward == "undefined") {
-			alert("请正确填写电话和密码");
-			return false;
-		}
-    	//开始登陆
-    	$.ajax({
-			type: 'POST',
-			url: "http://localhost:8081/login/login_load",
-			data: {"phoneNumber" : phone, "passward" : passward},
-			xhrFields:{withCredentials:true},
-			success: function (data){
-				if(data.stauts == 'success'){
-					$('#myLoginModal').modal('hide');
-					showAndCloseDIV("info_div");
-					$("#info_div").removeClass("close");
-					$("#info_div").addClass("alert");
-					$("#info_status").html(data.stauts)
-					$("#info_context").html("发送消息成功")
-					showAndCloseDIV("regist_load");
-					showAndCloseDIV("load_info")
-					var datainfo = $.parseJSON(data.data);
-					$("#userinfo").text(datainfo.userName);
-				} else {
-					alert(data.data.errorMsg)
-				}
-			},
-			error : function(data) {
-				alert("发生错误了，请重试")
-			}
-		});
-		return false;
-    	
-    }
-    
-    
-    //获取验证码
-    function getVaild() {
-    	var phoneNumber = $("#phoneNumber").val();
-		if (phoneNumber == null || phoneNumber == "" || phoneNumber == "undefined") {
-			alert("请填写电话");
-			return false;
-		}
-    	$.ajax({
-			type: 'POST',
-			url: "http://localhost:8081/login/verification_code",
-			data: {"phoneNumber":phoneNumber},
-			xhrFields:{withCredentials:true},
-			success: function (data){
-				if(data.stauts == 'success'){
-					alert(data.data)
-				} else {
-					alert(data.errorMsg)
-				}
-			},
-			error : function(data) {
-				alert("failed")
-			}
-		});
-		return false;
-    }
-    
-    //注册功能
-    function regist() {
-    	var loginId = $("#loginId").val();
-    	var phoneNumber = $("#phoneNumber").val();
-    	var address = $("#address").val();
-    	var verification_code = $("#verification_code").val();  	
-    	var sex = $("input[name='sex']:checked").val();
-    	var passward = $("#passward").val();
-    	var birthday = $("#birthday").val();
-    	if (!isNaN(Date.parse(birthday))) {
-    		//将字符串中格式为yyyy-mm-dd 转换为 yyyy/mm/dd
-    		birthday.replace(/\-/g,"/")
-    	}
-    	var birthdayDate = new Date(birthday);
-    	//验证手段
-    	if (loginId == null || loginId == "" || loginId == "undefined" 
-    			|| phoneNumber == null || phoneNumber == "" || phoneNumber == "undefined" 
-    			|| verification_code == null || verification_code == "" || verification_code == "undefined") {
-    		alert("昵称，手机号，验证码为必填选项，如果你不填，将不能完成注册！")
-    		return false;
-    	}
-    	
-    	$.ajax({
-			type: 'POST',
-			url: "http://localhost:8081/login/regist",
-			data: {
-				"phoneNumber":phoneNumber, 
-				"loginId":loginId, 
-				"address":address,
-				"sex":sex,
-				"birthday":birthdayDate, 
-				"passward":passward,
-				"verification_code" : verification_code},
-			xhrFields:{withCredentials:true},
-			success: function (data){
-				if(data.stauts == 'success'){
-					alert(data.data + ",3秒之后自动关闭")
-					//设置超时
-					setTimeout("$('#myRegistModal').modal('hide')",3000);
-					//关闭模态框的方法 $('#myModal').modal('hide')
-				} else {
-					alert(data.errorMsg)
-				}
-			},
-			error : function(data) {
-				alert("failed")
-			}
-		});
-		return false;
-    }
+	
     
     //简单联系
-    function commit(){
+    function commit(obj){
     		var name = $("#name").val();
     		var phone = $("#phone").val();
     		if (name == null || name == "" || name == "undefined" || phone == null || phone == "" || phone == "undefined") {
-    			alert("请填写姓名和电话");
+				swal("请填写姓名和电话","如果你不填，将不能继续后续操作哦！", "warning");
     			return false;
     		}
+			
+			//验证手机号
+			if(!checkFormat('mobile',phone)) {
+				swal("请输入正确的电话","必须正确输入才能发送消息哦", "warning");
+				return false;
+			}
+			
     		$.ajax({
     			type:"POST",
     			url:"http://localhost:8080/contact/sentContact",
@@ -479,13 +358,15 @@
 				xhrFields:{withCredentials:true},
     			success:function(data){
     				if (data.stauts == "success") {
-    					alert(data.data.msg)
+						swal(data.data.msg ,"successfully", "success");
     				} else {
-    					alert(data.data.errorMsg)
+						swal(data.data.errorMsg,"请重试", "error");
     				}
     			}
     		})
+			
     	}
+		
 		
 		function getLifeLst() {
 			var str = '';
@@ -528,23 +409,22 @@
 						}
 					} else {
 						str += '<div class="col-sm-6 col-xs-6 agile_events_grid">'
-						str += '<strong>'+ 暂无数据 + '</strong>'
+						str += '<strong>暂无数据</strong>'
 						str += '</div>'
 						$("#life_info").append(str);
 					}
 					$("#life_info").append(str);
 				} else {
-					alert(data.errorMsg)
 					str += '<div class="col-sm-6 col-xs-6 agile_events_grid">'
-					str += '<strong>'+ 暂无数据 + '</strong>'
+					str += '<strong>暂无数据</strong>'
 					str += '</div>'
 					$("#life_info").append(str);
 				}
 			},
 			error : function(data) {
-				alert("发生错误了，请重试!")
+				swal("发生错误了!","请重试", "error");
 				str += '<div class="col-sm-6 col-xs-6 agile_events_grid">'
-				str += '<strong>'+ 暂无数据 + '</strong>'
+				str += '<strong>暂无数据</strong>'
 				str += '</div>'
 				$("#life_info").append(str);
 			}
@@ -553,7 +433,7 @@
 		}
     </script>
     <!-- 模态框（Modal） 注册-->
-<div class="modal fade" id="myRegistModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="myRegistModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -574,7 +454,7 @@
   				<div class="control-group">
     				<label for="inputPhone3" class="control-label">手机:</label>
     				<div class="controls">
-    					<input type="text" style="width:50%" class="form-control" name="phoneNumber" id="phoneNumber"><a href="#" onclick="getVaild()">发送验证码</a>
+    					<input type="text" maxlength="11" style="width:50%" class="form-control" name="phoneNumber" id="phoneNumber"><a href="#" onclick="getVaild()">发送验证码</a>
    				 	</div>
   				</div>
   				
@@ -624,10 +504,10 @@
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal -->
-</div>
+	</div>
 
    <!-- 模态框（Modal） 登陆-->
-<div class="modal fade" id="myLoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="myLoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -642,7 +522,7 @@
   				<div class="control-group">
     				<label for="inputPhone3" class="control-label">手机号:</label>
     				<div class="controls">
-    					<input type="text" style="width:50%" class="form-control" name="loginPhone" id="loginPhone">
+    					<input type="text" maxlength="11" style="width:50%" class="form-control" name="loginPhone" id="loginPhone">
    				 	</div>
   				</div>		
   				<div class="control-group">
@@ -661,7 +541,7 @@
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal -->
-</div>
-
+	</div>
+<script src="js/common.js" th:src="@{/js/common.js}"></script>
 </body>
 </html>

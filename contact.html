@@ -10,7 +10,8 @@
 <link href="css/bootstrap.css" th:href="@{/css/bootstrap.css}" type="text/css" rel="stylesheet" media="all">
 <link href="css/style.css" th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="all">   
 <link href="css/font-awesome.css" th:href="@{/css/font-awesome.css}"  rel="stylesheet"> <!-- font-awesome icons -->
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="js/sweetalert2.min.js" th:src="@{/js/sweetalert2.min.js}"></script>
+<link href='css/sweetalert2.min.css' th:href="@{/css/sweetalert2.min.css}" rel='stylesheet' type='text/css'>  
 <!-- //Custom Theme files --> 
 <!-- js -->
 <script src="js/jquery-2.2.3.min.js" th:src="@{/js/jquery-2.2.3.min.js}"></script>  
@@ -179,7 +180,7 @@
 			var Subject = $("#Subject").val();
 			var Message = $("#Message").val();
     		if (name == null || name == "" || name == "undefined" || Email == null || Email == "" || Email == "undefined") {
-    			alert("请填写姓名和邮箱");
+				swal("请填写姓名和邮箱","必须正确输入才能发送哦", "warning");
     			return false;
     		}
 			

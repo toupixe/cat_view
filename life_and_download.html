@@ -11,7 +11,8 @@
 <link href="css/style.css" th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="all">   
 <link href="css/font-awesome.css" th:href="@{/css/font-awesome.css}" rel="stylesheet"> <!-- font-awesome icons -->
 <link href='css/simplelightbox.css' th:href="@{/css/simplelightbox.css}" rel='stylesheet' type='text/css'>  
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="js/sweetalert2.min.js" th:src="@{/js/sweetalert2.min.js}"></script>
+<link href='css/sweetalert2.min.css' th:href="@{/css/sweetalert2.min.css}" rel='stylesheet' type='text/css'>  
 <!-- //Custom Theme files --> 
 <!-- js -->
 <script th:src="@{/js/jquery-2.2.3.min.js}" src="js/jquery-2.2.3.min.js"></script> 
@@ -73,26 +74,9 @@
 	<!-- gallery -->
 	<div class="gallery w3-agileits">  
 		<div class="container"> 
-			<h3 class="agileits-title">My Life</h3> 
-			<div class="agileinfo-gallery-row">
-				<div class="col-md-4 col-sm-4 col-xs-6 w3gallery-grids">
-					<a th:href="@{/single.html}" href="single.html" class="imghvr-hinge-right wthree">
-						<img th:src="@{/img/g2.jpg}" src="img/g2.jpg" alt="" class="img-response" title="Invent Image"/> 
-						<div class="agile-figcaption">
-						  <h4>文章1</h4>
-						  <p>存放自己喜欢的文章</p>
-						</div>
-					</a> 
-				</div>
-				<div class="col-md-4 col-sm-4 col-xs-6 w3gallery-grids">
-					<a th:href="@{/img/g3.jpg}" href="img/g3.jpg" class="imghvr-hinge-right wthree">
-						<img th:src="@{/img/g3.jpg}" src="img/g3.jpg" alt="" class="img-response" title="Invent Image"/> 
-						<div class="agile-figcaption">
-						  <h4>文章2</h4>
-						  <p>精品资源</p>
-						</div>
-					</a> 
-				</div>
+			<h3 class="agileits-title" id="view_title">life</h3> 
+			<div class="agileinfo-gallery-row" id="life_info">
+				
 				<div class="clearfix"> </div>
 				<script type="text/javascript" th:src="@{/js/simple-lightbox.min.js}" src="js/simple-lightbox.min.js"></script>
 				<script>
@@ -184,15 +168,29 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script th:src="@{/js/bootstrap.js}" src="js/bootstrap.js"></script>
 	<script type="text/javascript">
+		
+		//生活标记
+		var lifeType='';
+		
 		$(function(){
 			setUserInfo();
+			var view_type = Request('view_type')
+			if (view_type == '文章集') {
+				lifeType = 'TYPE_file'
+			} else {
+				lifeType = 'TYPE_download'
+			}
+			//设置页面标题
+			$("#view_title").text(view_type)
+			getLifeLst();
 		})
 		
 		function getLifeLst() {
 			var str = '';
 			$.ajax({
 			type: 'POST',
-			url: "http://localhost:8080/life/getLifeLst",
+			data: {"lifeType" : lifeType},
+			url: "http://localhost:8080/life/getLifeLstByLifeType",
 			xhrFields:{withCredentials:true},
 			success: function (data){
 				if(data.stauts == 'success'){
@@ -211,13 +209,20 @@
 							var imgUrl = dataSource[i].imgUrl;
 							//文章的主键id
 							var lifeId = dataSource[i].id;
-							
+							str += '<div class="col-md-4 col-sm-4 col-xs-6 w3gallery-grids">'
+							str +=		'<a th:href="@{/single.html}" href="single.html?lifeId:'+ lifeId + '" class="imghvr-hinge-right wthree">'
+							str +=		'<img th:src="@{/' + imgUrl + '}" src="' + imgUrl + '" alt="" class="img-response" title="Invent Image"/> '
+							str +=		'<div class="agile-figcaption">'
+							str +=		'<h4>' + title + '</h4>'
+							str +=		'<p>' + context + '</p>'
+							str +=		'</div>'
+							str +=		'</a> '
+							str +=		'</div>'
 						}
 					} else {
-						str += '<div class="col-sm-6 col-xs-6 agile_events_grid">'
+						str += '<div class="col-md-4 col-sm-4 col-xs-6 w3gallery-grids">'
 						str += '<strong>暂无数据</strong>'
 						str += '</div>'
-						$("#life_info").append(str);
 					}
 					$("#life_info").append(str);
 				} else {

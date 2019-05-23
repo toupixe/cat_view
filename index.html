@@ -6,15 +6,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- js -->
+<script src="js/jquery-2.2.3.min.js" th:src="@{/js/jquery-2.2.3.min.js}"></script> 
+<script src="js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>  
 <!-- Custom Theme files -->
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="js/sweetalert2.min.js" th:src="@{/js/sweetalert2.min.js}"></script>
+<link href='css/sweetalert2.min.css' th:href="@{/css/sweetalert2.min.css}" rel='stylesheet' type='text/css'>  
 <link href="css/style.css" th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="all">  
  
 <link href="css/font-awesome.css" th:href="@{/css/font-awesome.css}"  rel="stylesheet"> <!-- font-awesome icons -->
 <!-- //Custom Theme files --> 
-<!-- js -->
-<script src="js/jquery-2.2.3.min.js" th:src="@{/js/jquery-2.2.3.min.js}"></script> 
-<script src="js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>  
+
 
 <link href="css/bootstrap.css" th:href="@{/css/bootstrap.css}" type="text/css" rel="stylesheet" media="all"> 
 <!-- //js -->
@@ -143,7 +145,7 @@
 								</a>
 							</div>
 							<div class="w3l_social_icon_gridr">
-								今日电脑端访问：<p class="counter">23,536</p>
+								电脑端访问<p class="counter" id="computorCount"></p>
 							</div>
 							<div class="clearfix"> </div>
 							<div class="w3l_social_icon_grid_pos">
@@ -157,7 +159,7 @@
 								</a>
 							</div>
 							<div class="w3l_social_icon_gridr">
-								今日手机端访问<p class="counter">13,676</p>
+								手机端访问<p class="counter" id="phoneCount"></p>
 							</div>
 							<div class="clearfix"> </div>
 							<div class="w3l_social_icon_grid_pos">
@@ -171,7 +173,7 @@
 								</a>
 							</div>
 							<div class="w3l_social_icon_gridr">
-								本站总访问<p class="counter">45,342</p>
+								本站总访问<p class="counter" id="totalCount"></p>
 							</div>
 							<div class="clearfix"> </div>
 							<div class="w3l_social_icon_grid_pos">
@@ -193,32 +195,32 @@
 				<div class="col-sm-4 col-xs-6 services-w3grid">
 					<a href="#"><span class="glyphicon glyphicon-heart hi-icon" aria-hidden="true"></span></a>
 					<h5>JAVA</h5>
-					<p>Itaque earum rerum hic a sapiente delectus</p>
+					<p>2年java开发经验</p>
 				</div>
 				<div class="col-sm-4 col-xs-6 services-w3grid">
 					<span class="glyphicon glyphicon-list-alt hi-icon" aria-hidden="true"></span>
 					<h5>JS</h5>
-					<p>Itaque earum rerum hic a sapiente delectus</p>
+					<p>前端必备技能</p>
 				</div>
 				<div class="col-sm-4 col-xs-6 services-w3grid">
 					<span class="glyphicon glyphicon-leaf hi-icon" aria-hidden="true"></span>
 					<h5>PYTHON</h5>
-					<p>Itaque earum rerum hic a sapiente delectus</p>
+					<p>数据分析必备技能</p>
 				</div>
 				<div class="col-sm-4 col-xs-6 services-w3grid bottom-grids wow fadeInUp animated" data-wow-delay=".5s">
 					<span class="glyphicon glyphicon-globe hi-icon" aria-hidden="true"></span>
 					<h5>SQL</h5>
-					<p>Itaque earum rerum hic a sapiente delectus</p>
+					<p>数据持久化工具</p>
 				</div>
 				<div class="col-sm-4 col-xs-6 services-w3grid bottom-grids">
 					<span class="glyphicon glyphicon-cutlery hi-icon" aria-hidden="true"></span>
 					<h5>分布式</h5>
-					<p>Itaque earum rerum hic a sapiente delectus</p>
+					<p>本网站采用分布式系统规划</p>
 				</div>
 				<div class="col-sm-4 col-xs-6 services-w3grid bottom-grids">
 					<span class="glyphicon glyphicon-th-large hi-icon" aria-hidden="true"></span>
 					<h5>微服务</h5>
-					<p>Itaque earum rerum hic a sapiente delectus</p>
+					<p>微服务系统开发</p>
 				</div>
 				<div class="clearfix"> </div>
 			</div>
@@ -332,7 +334,45 @@
     	showAndCloseDIV("info_div");
 		getLifeLst();
 		setUserInfo();
+		getloadingCount();
     })
+	
+	//简单联系
+    function getloadingCount(){
+
+    		$.ajax({
+    			type:"POST",
+    			url:"http://localhost:8081/login/loadingCount",
+    			dataType:"json",
+				xhrFields:{withCredentials:true},
+    			success:function(data){
+    				//电脑端
+					var computorCount = 0;
+					//手机端
+					var phoneCount = 0;
+					//总条数
+					var totalCount = 0;
+					if (data.stauts == "success") {
+						var sourceDate = data.data;
+						if (sourceDate.length != 0) {
+							for (var i = 0; i < sourceDate.length; i++) {
+								if (sourceDate[i].isComputor == '1') {
+									phoneCount = sourceDate[i].count;
+								} else {
+									computorCount = sourceDate[i].count;
+								}
+							}
+							totalCount = computorCount + phoneCount;
+						}
+    				}
+					$("#computorCount").text(computorCount)
+					$("#phoneCount").text(phoneCount)
+					$("#totalCount").text(totalCount)
+    			}
+    		})
+			
+    	}
+	
 	
     
     //简单联系

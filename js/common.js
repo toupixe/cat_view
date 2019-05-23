@@ -26,6 +26,43 @@ function showAndCloseDIV(div_id) {
     }
 }
 
+function addOption(select_id,data) {
+			$("#" + select_id).empty();
+			if (data.length != 0 ) {
+				for(var i = 0; i < data.length; i++) {
+				$("#" + select_id).append("<option value='" + data[i].typeId + "'>" + data[i].typeName + "</option>")
+				}
+			} else {
+				$("#" + select_id).append("<option value='暂无数据'> 暂无数据</option>")
+			}
+			
+			
+}
+
+
+//获取url的参数的值
+		function Request(strName){ 
+			var strHref = window.location.href; 
+			var intPos = strHref.indexOf("?"); 
+			var strRight = strHref.substr(intPos + 1); 
+			var arrTmp = strRight.split("&"); 
+			for(var i = 0; i < arrTmp.length; i++) { 
+				var arrTemp = arrTmp[i].split(":"); 
+				if(arrTemp[0].toUpperCase() == strName.toUpperCase()) 
+				return decodeURI(arrTemp[1]); 
+			} 
+			return ""; 
+		}
+//获取一个yyyy-mm-dd的时间
+		function getTime(datetime) {
+			var date = new Date(datetime);
+			var year = date.getFullYear();
+			var month = date.getMonth();
+			var day = date.getDay();
+			return year + "-" + month + "-" + day
+		}
+
+
 
 
 /**

@@ -10,7 +10,6 @@
 <!-- Custom Theme files -->
 <!-- js -->
 <script th:src="@{/js/jquery-2.2.3.min.js}" src="js/jquery-2.2.3.min.js"></script> 
-<script src="js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>  
 <script th:src="@{/js/bootstrap.js}" src="js/bootstrap.js"></script>
 <link href="css/bootstrap.css" th:href="@{/css/bootstrap.css}" type="text/css" rel="stylesheet" media="all">
 <link href="css/style.css" th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="all">   
@@ -19,10 +18,6 @@
 <!--<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>-->
 <script src="js/sweetalert2.min.js" th:src="@{/js/sweetalert2.min.js}"></script>
 <link href='css/sweetalert2.min.css' th:href="@{/css/sweetalert2.min.css}" rel='stylesheet' type='text/css'>  
-<link href="https://cdn.bootcss.com/bootstrap-fileinput/5.0.3/css/fileinput.min.css" rel="stylesheet">
-<script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.3/js/fileinput.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.3/js/locales/zh.js"></script>
-<!-- //Custom Theme files --> 
 
 <style>
 	#register {
@@ -216,33 +211,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 	<script type="text/javascript">
-		    var url = '';
-			$("#uploadImage").fileupload({
-				url :"http://localhost:8080/life/uploadLifePic",
-				dataType : 'json',
-				autoUpload : false,
-				acceptFileTypes : /(gif|jpe?g|png)$/i,
-				maxFileSize : 1000000, // 1 MB
-				imageMaxWidth : 100,
-				imageMaxHeight : 100,
-				messages : {
-					acceptFileTypes : '文件类型不匹配',
-					maxFileSize : '文件过大',
-					minFileSize : '文件过小'
-				}
-				}).on("fileuploadadd", function(e, data) {
-					// 当文件添加上去时候调用
-					$("#titleImageError").html("");
-					data.submit()
-				}).on("fileuploaddone", function(e, data) {
-					// 上传完成时调用
-					if (data.result.returnState == "ERROR") {
-					alert("上传失败")
-					return;
-				}
-				url = data.result.returnData.url;
-			});
-		
 		var size = 2;
 		function createLife(){
 			$("#content_info" + size).show();
@@ -251,13 +219,22 @@
 				$("#addButton").hide();
 			}
 		}
-		
+		//被选中的标签
+		var typeOptions = '';
+		//被选中的分类
+		var typeList = ''
 		function getTypeList() {
 			var type_cate = $("input[name='life_type_cate']:checked").val();
 			if (type_cate == null || type_cate == '' || type_cate == 'undefined') {
 				swal("请选中一个分类","你必须选择一个分类才能进行后续操作", "warning");
 				return false;
 			}
+			
+			if (typeList != '' && typeOptions !='') {
+				swal("当前分类已经有被选中的标签","你不能在进行切换分类", "warning");
+				return false;
+			}
+			typeList = type_cate;
 			$.ajax({
     			type:"POST",
     			url:"http://localhost:8080/type/getTypeByCate",
@@ -282,40 +259,82 @@
 			}
 		}
 		
+		function setTypeShow() {
+			
+			var text = $('#type_select option:selected').text();//选中的文本
+			var values = $('#type_select option:selected').val();//选中的值
+			if (typeOptions.search(values) != -1) {
+				swal("你已经添加过该分类了","请勿重复选择", "warning");
+				return false;
+			}
+			typeOptions += "&" + values;
+			var klass = ['label-success','label-info','label-warning','label-danger','label-primary']
+			var random = Math.round(Math.random() * 5);
+			$("#typeShow").append('<span class="label ' + klass[random] + '">' + text + '</span>')
+		}
 		
 		/**
 		*新建生活
 		*/
 		function submitLife() {
+		
 			//标题
-			
+			var title = $("#life_title").val();
 			//描述
-			
+			var context = $("#life_context").val();
 			//封面图片
-			
+			//var pic = $("#life_pic").val();
 			//分类
-			
+			var cate = typeList;
 			//标签
-			
+			var type = typeOptions;
 			//内容1
-			
+			var life_content1 = $("#life_content1").val()
 			//图片1
 			
 			//内容2
-			
+			var life_content2 = $("#life_content2").val()
 			//图片2
 			
 			//内容3
-			
+			var life_content3 = $("#life_content3").val()
 			//图片3
 			
 			//内容4
-			
+			var life_content4 = $("#life_content4").val()
 			//图片4
 			
 			//内容5
-			
+			var life_content5 = $("#life_content5").val()
 			//图片5
+			
+			//添加获取文件信息
+			var formdata=new FormData();
+			formdata.append('enctype', 'multipart/form-data');
+			formdata.append('title', title);
+			formdata.append('context', context);
+			//formdata.append('pic', pic);
+			formdata.append('cate', cate);
+			formdata.append('type', type);
+			formdata.append('content1', life_content1);
+			formdata.append('file',$('#life_pic').get(0).files[0]);
+			// formdata.append('recid',str);
+			$.ajax({
+				url:"http://localhost:8080/life/uploadLifePic",
+				type:'post',
+				contentType:false,
+				data:formdata,
+				processData:false,
+				dataType:"json",
+				xhrFields:{withCredentials:true},
+				success:function(info){    
+					console.log(info)
+				// $('.backimg').attr('src',JSON.parse(info).msg);
+				},
+				error:function(err){
+					console.log(err)
+				}
+			});
 			
 
 		}
@@ -323,17 +342,6 @@
 		$(function(){
 			setUserInfo();
 		})
-	</script>
-	<script charset="utf-8" src="kindeditor/kindeditor-all.js"></script>
-	<script charset="utf-8" src="kindeditor/lang/zh-CN.js"></script>
-	<script>
-        KindEditor.ready(function(K) {
-                window.editor = K.create('#life_content1');
-				window.editor = K.create('#life_content2');
-				window.editor = K.create('#life_content3');
-				window.editor = K.create('#life_content4');
-				window.editor = K.create('#life_content5');
-        });
 	</script>
 	    <!-- 模态框（Modal） 创建生活-->
 	<div class="modal fade" id="myCreateLife" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -357,27 +365,16 @@
 				<div class="form-group">
     				<label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red">*</span>介绍:</label>
     				<div class="col-sm-10">
-    					<input type="text" class="form-control" name="life_title" id="life_context">
+    					<input type="text" class="form-control" name="life_context" id="life_context">
    				 	</div>
   				</div>
 				<div class="form-group">
-    				<label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red">*</span>封面:</label>
-    				<div class="col-md-8">
-					<div class="fileinput fileinput-new" data-provides="fileinput" id="uploadImageDiv">
-                    <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                        <img src="" alt="" />
-                    </div>
-                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
-                    <div>
-                        <span class="btn default btn-file"> <span
-                        class="fileinput-new">选择图片</span> <span class="fileinput-exists">更改</span> <input name="uploadImage" id="uploadImage" multiple type="file"/></span>
-                        <a href="#" class="btn default fileinput-exists" data-dismiss="fileinput">移除</a>
-                        <span>请选择1M以内图片</span>
-                    </div>
-                </div>
-                <div id="titleImageError" style="color: #a94442"></div>
+    				<label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red">*</span>封面图片:</label>
+    				<div class="col-sm-10">
+    					<input type="file" class="form-control" name="life_pic" id="life_pic">
+   				 	</div>
   				</div>
-				</div>
+				
 				<div class="form-group">
   					<label for="inputSex3" class="col-sm-2 control-label"><span style="color:red">*</span>分类:</label>
 					<label for="inputEmail3" class="col-sm-2 control-label">文章区:</label>
@@ -394,38 +391,45 @@
 				<div class="form-group">
     				<label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red">*</span>标签:</label>
     				<div class="col-sm-10">
-    					<select class="form-control" id="type_select" onclick="checkChecked()">
+    					<select class="form-control" id="type_select" onclick="checkChecked()" onchange="setTypeShow()">
 						</select>
    				 	</div>
   				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label"></label>
+					<div class="col-sm-10" id="typeShow">
+					</div>
+				</div>
+				
+				
   				<div class="form-group" id="content_info1">
     				<label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red">*</span>内容1:</label>
     				<div class="col-sm-10">
-						<textarea class="form-control" name="life_title" id="life_content1" style="width:100%;height:30%;"></textarea>
+						<textarea class="form-control" name="life_content1" id="life_content1" style="width:100%;height:30%;"></textarea>
    				 	</div>
   				</div>
 				<div class="form-group"  style="display:none;" id="content_info2">
     				<label for="inputEmail3" class="col-sm-2 control-label">内容2:</label>
     				<div class="col-sm-10">
-						<textarea class="form-control" name="life_title" id="life_content2" style="width:100%;height:30%;"></textarea>
+						<textarea class="form-control" name="life_content2" id="life_content2" style="width:100%;height:30%;"></textarea>
    				 	</div>
   				</div>
 				<div class="form-group" style="display:none;" id="content_info3">
     				<label for="inputEmail3" class="col-sm-2 control-label">内容3:</label>
     				<div class="col-sm-10">
-						<textarea class="form-control" name="life_title" id="life_content3" style="width:100%;height:30%;"></textarea>
+						<textarea class="form-control" name="life_content3" id="life_content3" style="width:100%;height:30%;"></textarea>
    				 	</div>
   				</div>
 				<div class="form-group" style="display:none;" id="content_info4">
     				<label for="inputEmail3" class="col-sm-2 control-label">内容4:</label>
     				<div class="col-sm-10">
-						<textarea class="form-control" name="life_title" id="life_content4" style="width:100%;height:30%;"></textarea>
+						<textarea class="form-control" name="life_content4" id="life_content4" style="width:100%;height:30%;"></textarea>
    				 	</div>
   				</div>
 				<div class="form-group" style="display:none;" id="content_info5">
     				<label for="inputEmail3" class="col-sm-2 control-label">内容5:</label>
     				<div class="col-sm-10">
-						<textarea class="form-control" name="life_title" id="life_content5" style="width:100%;height:30%;"></textarea>
+						<textarea class="form-control" name="life_content5" id="life_content5" style="width:100%;height:30%;"></textarea>
    				 	</div>
   				</div>
 				
@@ -441,9 +445,6 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal -->
 	</div>
-	
-	
-	
 	
 	    <!-- 模态框（Modal） 注册-->
 	<div class="modal fade" id="myRegistModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

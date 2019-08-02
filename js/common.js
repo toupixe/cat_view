@@ -57,8 +57,10 @@ function addOption(select_id,data) {
 		function getTime(datetime) {
 			var date = new Date(datetime);
 			var year = date.getFullYear();
-			var month = date.getMonth();
-			var day = date.getDay();
+			var month = date.getMonth() + 1;
+			month = month < 10 ? '0' + month : month
+			var day = date.getDate();
+			day = day < 10 ? '0' + day : day
 			return year + "-" + month + "-" + day
 		}
 

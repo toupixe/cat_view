@@ -113,7 +113,7 @@
 				</div>
 				<div class="w3l_admin"> 
 					<p><span id="beast_comment_context">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras rhoncus nulla tempus est tempor, sit amet gravida turpis faucibus. Ut rhoncus vehicula sem varius finibus. Mauris ac ullamcorper velit etiam accumsan felis.</span></p>
-					<a href="#"><i id="beast_comment_author">John Frank</i></a>
+					<a href="#"><i id="beast_comment_author"></i></a>
 				</div>
 			</div>
 			<div class="col-md-5 w3ls_single_right"> 
@@ -233,13 +233,15 @@
 			//正文
 			$("#life_context").html(lifeDetails.context);
 			//封面
-			$("#life_pic").attr("src",lifeDetails.imgUrl)
+			$("#life_pic").attr("src","http://127.0.0.1:8080/" + lifeDetails.imgUrl)
 		}
 		
 		function setLifeCommentToHtml(commen) {
 			var str = '';
 			if (commen.length ==0 ) {
 				str +='<div class="agileits_three_comment_grid">暂无评论</div>'
+				$("#beast_comment_context").html(str);
+				$("#beast_comment_author").html();
 			} else {
 				for(var i=0;i<commen.length;i++) {
 					str+='<div class="agileits_three_comment_grid">'
@@ -268,7 +270,7 @@
 			}
 			$("#comment_info").append(str)
 		}
-		
+		/**设置更新时间*/
 		function setUpdateToHtml(updateEvent) {
 			var str = ''
 			for(var i=0; i< updateEvent.length; i++) {
@@ -277,7 +279,7 @@
 			$("#update_info").append(str)
 		}
 		
-		
+		/**在网页设置标签*/
 		function setTypeToHtml(type) {
 			var str = '';
 			for (var i=0;i<type.length;i++) {

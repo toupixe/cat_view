@@ -139,9 +139,10 @@
 			<div class="w3_leave_comment">
 				<h3>发表你的 <span>意见</span></h3> 
 				<form action="#" method="post">
-					<textarea placeholder="说你想说的" name="Message" required=""></textarea>
-					<input type="submit" value="提交">
+					<textarea placeholder="说你想说的" id="message" name="Message" required=""></textarea>
+					<input type="button" value="提交" onclick="commentSubmit()">
 				</form>
+				<input type="hidden" id="lifeId" >
 			</div>
 		</div>
 	</div>
@@ -223,6 +224,31 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 	<script type="text/javascript">
+		
+		//发表你的意见
+		function commentSubmit() {
+			var message = $("#message").val();
+			var lifeId = $("#lifeId").val();
+			if (isEmpty(message)) {
+				swal("你需要提交的评论不能为空哦","请重试", "error");
+				return false;
+			}
+			$.ajax({
+				type:"POST",
+				url:"http://localhost:8080/life/putComment",
+				data:{"message":message, "lifeId": lifeId},
+				dataType:"json",
+				xhrFields:{withCredentials:true},
+				success:function(data){
+					if (data.stauts == "success") {
+						swal(data.data, "success");
+					} else {
+						swal(data.data.errorMsg,"请重试", "error");
+					}
+				}
+			});
+		}
+		
 		function setLifeTOHtml(lifeDetails) {
 			//标题
 			$("#life_title").html(lifeDetails.title);
@@ -243,6 +269,7 @@
 				$("#beast_comment_context").html(str);
 				$("#beast_comment_author").html();
 			} else {
+				var flag = true;
 				for(var i=0;i<commen.length;i++) {
 					str+='<div class="agileits_three_comment_grid">'
 					str+=	'<div class="agileits_tom"> '
@@ -265,7 +292,14 @@
 					if (commen[i].isBetter == 't') {
 						$("#beast_comment_context").html(commen[i].context);
 						$("#beast_comment_author").html(commen[i].userName);
-					}
+						flag = false;
+					} 
+				}
+				if (flag) {
+					var str1 = '';
+					str1 +='<div class="agileits_three_comment_grid">暂无评论</div>'
+					$("#beast_comment_context").html(str1);
+					$("#beast_comment_author").html();
 				}
 			}
 			$("#comment_info").append(str)
@@ -328,6 +362,7 @@
 			var lifeId = Request('lifeId')
 			getLifeById(lifeId);
 			setUserInfo();
+			$("#lifeId").val(lifeId);
 		})
 		
 	</script>

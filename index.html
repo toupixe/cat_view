@@ -422,8 +422,8 @@
 						for(var i=0; i< dataSource.length; i++) {
 							var datetime = new Date(dataSource[i].time);
 							var year = datetime.getFullYear();
-							var month = datetime.getMonth();
-							var day = datetime.getDay();
+							var month = datetime.getMonth() + 1;
+							var day = datetime.getDate();
 							//标题
 							var title = dataSource[i].title;
 							//正文
@@ -433,7 +433,7 @@
 							//文章的主键id
 							var lifeId = dataSource[i].id;
 							str += '<div class="col-sm-6 col-xs-6 agile_events_grid">'
-							str +=			'<a href="single.html?lifeId:'+ lifeId + '"><img th:src="@{127.0.0.1:8080'+ imgUrl +'}" src="http://127.0.0.1:8080/' + imgUrl + '" alt=" " class="img-responsive" /></a>'
+							str +=			'<a href="single.html?lifeId:'+ lifeId + '"><img th:src="@{127.0.0.1:8080'+ imgUrl +'}" src="http://127.0.0.1:8080/' + imgUrl + '" alt=" " class="img-responsive" style="vertical-align:middle;"/></a>'
 							str +=			'<div class="agile_events_grid_pos agile_events_grid_pos1">'
 							str +=				'<h5><span>'+ day +'</span> '+ month +' / ' + year + '</h5>'
 							str +=				'<h4><a href="single.html?lifeId:'+ lifeId + '" id="life_title">'+ title +'</a></h4>'
@@ -452,7 +452,6 @@
 						str += '<div class="col-sm-6 col-xs-6 agile_events_grid">'
 						str += '<strong>暂无数据</strong>'
 						str += '</div>'
-						$("#life_info").append(str);
 					}
 					$("#life_info").append(str);
 				} else {

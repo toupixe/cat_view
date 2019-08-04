@@ -115,7 +115,7 @@
 					<a th:href="@{/life_and_download.html}" href="life_and_download.html?view_type:下载区" class="imghvr-hinge-right wthree">
 						<img th:src="@{/img/g3.jpg}" src="img/g3.jpg" alt="" class="img-response" title="Invent Image"/> 
 						<div class="agile-figcaption">
-						  <h4>下载区</h4>
+						  <h4>技术</h4>
 						  <p>精品资源</p>
 						</div>
 					</a> 
@@ -267,7 +267,7 @@
 				swal("你已经添加过该分类了","请勿重复选择", "warning");
 				return false;
 			}
-			typeOptions += "&" + values;
+			typeOptions += values + "&";
 			var klass = ['label-success','label-info','label-warning','label-danger','label-primary']
 			var random = Math.round(Math.random() * 5);
 			$("#typeShow").append('<span class="label ' + klass[random] + '">' + text + '</span>')
@@ -291,7 +291,7 @@
 			//分类
 			var cate = typeList;
 			//标签
-			var type = typeOptions;
+			var type = typeList + "&" + typeOptions.substring(0,typeOptions.lastIndexOf("&"));
 			//内容1
 			var life_content1 = $("#life_content1").val()
 			//图片1
